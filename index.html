@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>$Ai Airdrop</title>
+  <style>
+    body { font-family: Arial; padding: 30px; }
+    input, button { padding: 8px; width: 100%; margin-top: 5px; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    #status { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Участвуй в Airdrop от $Ai!</h2>
+  <form id="airdropForm">
+    <label>Twitter (X) ник (без @):</label>
+    <input type="text" name="twitter" required>
+
+    <label>Ссылка на ретвит:</label>
+    <input type="url" name="retweet" required>
+
+    <label>Адрес кошелька:</label>
+    <input type="text" name="wallet" required>
+
+    <label>Email (необязательно):</label>
+    <input type="email" name="email">
+
+    <button type="submit">Участвовать</button>
+    <div id="status"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('airdropForm');
+    const status = document.getElementById('status');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxtvyhcEycE6TkQop2hmaAdDTYihPzBZlTk0WyUgCtuRaEFukrQFQ6DqBNcJ5beu6rJ/exec';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const text = await response.text();
+        if (text.includes("OK")) {
+          status.innerHTML = "✅ Успешно отправлено!";
+          status.style.color = "green";
+        } else {
+          status.innerHTML = "❌ Ошибка. Попробуйте позже.";
+          status.style.color = "red";
+        }
+      } catch (err) {
+        status.innerHTML = "❌ Сетевая ошибка.";
+        status.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
